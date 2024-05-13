@@ -1,0 +1,78 @@
+{% extends 'usuario/base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+
+        <form class="d-table-row" method="GET" action="{% url 'home' %}">
+            <div class="mb-4 d-flex">
+                <input type="text" class="form-control" name="filtro_nome"  placeholder="Filtrar por nome">
+                <button type="submit" class="btn btn-outline-success" >Filtrar</button>
+                <a href="{% url 'home' %}" class="btn btn-secondary">Voltar</a>
+            </div>
+        </form>
+            <div class=" ">
+                <a class="btn btn-secondary " href="{%url 'add_record'%}">Cadastrar Funcionario</a>
+            </div>
+<br>
+        <table class="table table-bordered ">
+            <thead class="table table-dark table-hover ">
+                <tr>
+                    <th scope="col">NOME</th>
+                    <th scope="col">SOBRENOME</th>
+                    <th scope="col">CEP</th>
+                    <th scope="col">ENDEREÇO</th>
+                    <th scope="col">CIDADE</th>
+                    <th scope="col">EMAIL</th>
+                    <th scope="col">TELEFONE</th>
+                    <th scope="col">DATA REGISTRO</th>
+                    <th scope="col">PERFIL</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                    <tr>
+                        <td>{{ record.nome }}</td>
+                        <td>{{ record.sobrenome }}</td>
+                        <td>{{ record.cep }}</td>
+                        <td>{{ record.logradouro }}</td>
+                        <td>{{ record.cidade }}</td>
+                        <td>{{ record.email }}</td>
+                        <td>{{ record.telefone }}</td>
+                        <td>{{ record.created_at }}</td>
+                        <td>
+                            <a href="{% url 'record' record.id %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-person-rolodex mx-auto" viewBox="0 0 16 16">
+                                    <path d="M8 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+                                    <path d="M1 1a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h.5a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5.5.5 0 0 1 1 0 .5.5 0 0 0 .5.5h.5a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H6.707L6 1.293A1 1 0 0 0 5.293 1zm0 1h4.293L6 2.707A1 1 0 0 0 6.707 3H15v10h-.085a1.5 1.5 0 0 0-2.4-.63C11.885 11.223 10.554 10 8 10c-2.555 0-3.886 1.224-4.514 2.37a1.5 1.5 0 0 0-2.4.63H1z"/>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="col-md-4 offset-md-4 ">
+            <h1 class="text-center red">Login</h1>
+            <br/>
+            <form method="POST" action="{% url 'home' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input type="text" class="form-control" name="username" placeholder="Usuário:" required>
+                </div>
+                <div class="mb-3 ">
+                    <input type="password" class="form-control" name="password" placeholder="Senha:" required>
+                </div>
+                <div class="mb-3 form-check ">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Lembrar-me</label>
+                </div>
+                <div class=" text-center">
+                <button type="submit" class="mb-4 btn btn-secondary text-center">Entrar</button>
+                    </br>
+                    <a class="mb-4   btn btn-secondary" href="{%url 'register'%}">Registre-se</a>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}

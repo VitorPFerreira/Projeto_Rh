@@ -1,0 +1,33 @@
+{% extends 'usuario/base.html' %}
+
+{% block content %}
+<div class="col-md-6 offset-md-3">
+    <h1>Cadastro de Funcionário</h1>
+    <br/>
+    <form method="POST" action="{% url 'add_record' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <br/>
+        <button type="submit" class="btn btn-secondary">Adicionar</button>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Voltar</a>
+    </form>
+               <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+        $(document).ready(function() {
+            $('#id_cep').change(function() {
+                var cep = $(this).val();
+                $.ajax({
+                    url: 'https://viacep.com.br/ws/' + cep + '/json/',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#id_logradouro').val(data.logradouro);
+                        $('#id_bairro').val(data.bairro);
+                        $('#id_cidade').val(data.localidade);
+                        $('#id_estado').val(data.uf);
+                    }
+                });
+            });
+        });
+        </script>
+</div>
+{% endblock %}
